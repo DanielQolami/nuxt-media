@@ -43,6 +43,7 @@
     "shaka-player": "^5.1.12"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "^1.2.115",
     "@nuxt/devtools": "^3.2.4",
     "@nuxt/eslint-config": "^1.15.2",
     "@nuxt/module-builder": "^1.0.2",
