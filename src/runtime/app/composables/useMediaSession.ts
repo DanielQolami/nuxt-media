@@ -36,9 +36,9 @@ export function useMediaSession() {
     runtimeConfig.public.appMedia?.mediaSession?.enabled ?? true;
   const isSupported = useSupported(() => {
     return (
-      isEnabledByConfig &&
-      typeof navigator !== "undefined" &&
-      "mediaSession" in navigator
+      isEnabledByConfig
+      && typeof navigator !== "undefined"
+      && "mediaSession" in navigator
     );
   });
 
@@ -69,7 +69,8 @@ export function useMediaSession() {
         album: metadata.album,
         artwork: normalizeArtwork(metadata, defaultArtwork),
       });
-    } catch {
+    }
+    catch {
       mediaSession.metadata = null;
     }
   }
@@ -96,7 +97,8 @@ export function useMediaSession() {
 
     try {
       mediaSession.setActionHandler(action, handler);
-    } catch {
+    }
+    catch {
       // Some browsers throw when unsupported action handlers are registered.
     }
   }
@@ -127,7 +129,8 @@ export function useMediaSession() {
       }
 
       mediaSession.setPositionState(positionState);
-    } catch {
+    }
+    catch {
       // Browsers may reject invalid duration/position combinations.
     }
   }

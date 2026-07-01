@@ -99,8 +99,8 @@ export function useMediaViewerGallery<
   const hasCustomSlideMediaSlot = computed(() => Boolean(slots["slide-media"]));
   const shouldBeOpen = computed(
     () =>
-      route.query.gallery === props.galleryKey &&
-      typeof route.query.slide === "string",
+      route.query.gallery === props.galleryKey
+      && typeof route.query.slide === "string",
   );
   const activeItem = computed<TItem | null>(
     () => props.items[activeIndex.value] ?? null,
@@ -119,8 +119,8 @@ export function useMediaViewerGallery<
   const mediaElementRef = computed<HTMLElement | null>(() => {
     if (customMediaElement.value) return customMediaElement.value;
     if (
-      hasCustomSlideMediaSlot.value &&
-      refs.customSlideMediaWrapperRef.value
+      hasCustomSlideMediaSlot.value
+      && refs.customSlideMediaWrapperRef.value
     ) {
       return refs.customSlideMediaWrapperRef.value;
     }
@@ -160,10 +160,10 @@ export function useMediaViewerGallery<
       width: measuredWidth,
       height: measuredHeight,
       aspectRatio:
-        measuredAspectRatio ??
-        item.viewerLayout?.aspectRatio ??
-        getMediaAspectRatio(item) ??
-        getDefaultMediaAspectRatio(layoutKind),
+        measuredAspectRatio
+        ?? item.viewerLayout?.aspectRatio
+        ?? getMediaAspectRatio(item)
+        ?? getDefaultMediaAspectRatio(layoutKind),
     });
   });
 

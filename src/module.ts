@@ -73,10 +73,10 @@ export default defineNuxtModule<ModuleOptions>({
         streaming: {
           retryParameters: {
             maxAttempts: 4,
-            baseDelay: 1000,
+            baseDelay: 1_000,
             backoffFactor: 2,
             fuzzFactor: 0.5,
-            timeout: 30000,
+            timeout: 30_000,
           },
           bufferingGoal: 30,
           rebufferingGoal: 15,

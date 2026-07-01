@@ -103,16 +103,16 @@ function formatVariantTrackLabel(
     const resolution = track.height ? `${track.height}p` : undefined;
 
     return (
-      [resolution, bitrate, language].filter(Boolean).join(" · ") ||
-      `Track ${track.id}`
+      [resolution, bitrate, language].filter(Boolean).join(" · ")
+      || `Track ${track.id}`
     );
   }
 
   const channels = track.channelsCount ? `${track.channelsCount}ch` : undefined;
 
   return (
-    [bitrate, language, channels].filter(Boolean).join(" · ") ||
-    `Track ${track.id}`
+    [bitrate, language, channels].filter(Boolean).join(" · ")
+    || `Track ${track.id}`
   );
 }
 
@@ -141,8 +141,8 @@ function dedupeVariantTracks(
   const sorted = [...tracks].sort((a, b) => {
     if (kind === "video") {
       return (
-        (b.height ?? 0) - (a.height ?? 0) ||
-        (b.bandwidth ?? 0) - (a.bandwidth ?? 0)
+        (b.height ?? 0) - (a.height ?? 0)
+        || (b.bandwidth ?? 0) - (a.bandwidth ?? 0)
       );
     }
 
@@ -252,8 +252,8 @@ export function useMediaPlayerQuality(options: UseMediaPlayerQualityOptions) {
 
   const shouldShowQualitySelector = computed(() => {
     return (
-      Boolean(toValue(options.showQualitySelector) ?? true) &&
-      qualityOptions.value.length > 1
+      Boolean(toValue(options.showQualitySelector) ?? true)
+      && qualityOptions.value.length > 1
     );
   });
 
@@ -285,8 +285,8 @@ export function useMediaPlayerQuality(options: UseMediaPlayerQualityOptions) {
     }
 
     if (
-      options.kind === "video" &&
-      options.mediaElementRef.value instanceof HTMLVideoElement
+      options.kind === "video"
+      && options.mediaElementRef.value instanceof HTMLVideoElement
     ) {
       options.mediaElementRef.value.poster =
         source.poster || toValue(options.poster) || "";
@@ -306,7 +306,8 @@ export function useMediaPlayerQuality(options: UseMediaPlayerQualityOptions) {
       });
 
       options.onLoaded?.(player);
-    } catch (error) {
+    }
+    catch (error) {
       console.error("Error loading media source:", error);
       options.onError?.(
         error instanceof Error
@@ -341,7 +342,8 @@ export function useMediaPlayerQuality(options: UseMediaPlayerQualityOptions) {
         await options.player.selectVariantTrack(option.trackId);
         options.onQualityChange?.(option);
       }
-    } catch (error) {
+    }
+    catch (error) {
       options.onError?.(
         error instanceof Error
           ? error
@@ -398,9 +400,9 @@ export function useMediaPlayerQuality(options: UseMediaPlayerQualityOptions) {
     options.player.activeVariantTrack,
     (track) => {
       if (
-        !track ||
-        options.player.isAbrEnabled.value ||
-        sourceQualityOptions.value.length > 0
+        !track
+        || options.player.isAbrEnabled.value
+        || sourceQualityOptions.value.length > 0
       )
         return;
 

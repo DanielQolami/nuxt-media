@@ -1,24 +1,26 @@
 <script lang="ts">
+interface MediaViewerSlideMetricPayload {
+  type:
+    | "open"
+    | "close"
+    | "slide-change"
+    | "download"
+    | "zoom-change"
+    | "preload";
+  [key: string]: unknown;
+}
+
 interface MediaViewerSlideEmits {
   "update:zoom": [value: number];
   "navigate:previous": [];
   "navigate:next": [];
-  download: [];
-  metric: [
-    payload: {
-      type:
-        | "open"
-        | "close"
-        | "slide-change"
-        | "download"
-        | "zoom-change"
-        | "preload";
-      [key: string]: unknown;
-    },
+  "download": [];
+  "metric": [
+    payload: MediaViewerSlideMetricPayload,
   ];
 }
 
-export type { MediaViewerSlideEmits };
+export type { MediaViewerSlideEmits, MediaViewerSlideMetricPayload };
 </script>
 
 <script setup lang="ts">
@@ -232,8 +234,8 @@ defineExpose({
         <div class="space-y-1">
           <h3 class="text-base font-semibold text-foreground">
             {{
-              item.title ||
-              (currentRenderer.kind === "pdf" ? "PDF preview" : "Map preview")
+              item.title
+                || (currentRenderer.kind === "pdf" ? "PDF preview" : "Map preview")
             }}
           </h3>
           <p class="text-sm text-muted-foreground">

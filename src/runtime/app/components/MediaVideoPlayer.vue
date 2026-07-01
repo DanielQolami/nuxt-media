@@ -23,9 +23,9 @@ import { useVideoPlayer } from "../composables/useVideoPlayer";
 import { cn } from "../utils/cn.utils";
 
 interface MediaVideoPlayerEmits {
-  ready: [player: ShakaPlayerInstance];
-  loaded: [player: ShakaPlayerInstance];
-  error: [error: Error];
+  "ready": [player: ShakaPlayerInstance];
+  "loaded": [player: ShakaPlayerInstance];
+  "error": [error: Error];
   "quality-change": [option: QualityOption];
   "metadata-loaded": [event: Event];
 }
@@ -232,7 +232,7 @@ defineExpose({
         :srclang="track.srclang"
         :label="track.label"
         :default="track.default"
-      />
+      >
     </video>
 
     <Transition

@@ -13,9 +13,9 @@ import { useAudioPlayer } from "../composables/useAudioPlayer";
 import { cn } from "../utils/cn.utils";
 
 interface MediaAudioPlayerEmits {
-  ready: [player: ShakaPlayerInstance];
-  loaded: [player: ShakaPlayerInstance];
-  error: [error: Error];
+  "ready": [player: ShakaPlayerInstance];
+  "loaded": [player: ShakaPlayerInstance];
+  "error": [error: Error];
   "quality-change": [option: QualityOption];
 }
 

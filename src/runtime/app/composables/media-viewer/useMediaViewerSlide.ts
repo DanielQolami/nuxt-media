@@ -154,8 +154,8 @@ export function useMediaViewerSlide(options: UseMediaViewerSlideOptions) {
 
   const imageAspect = computed(() => {
     return (
-      imageMeasurements.measuredDimensions.value.aspectRatio ??
-      currentRenderer.value.fallbackAspectRatio
+      imageMeasurements.measuredDimensions.value.aspectRatio
+      ?? currentRenderer.value.fallbackAspectRatio
     );
   });
 
@@ -191,8 +191,8 @@ export function useMediaViewerSlide(options: UseMediaViewerSlideOptions) {
 
     if (options.item.value.kind === "audio") {
       return (
-        audioCardRef.value ??
-        resolveExposedElement(
+        audioCardRef.value
+        ?? resolveExposedElement(
           audioPlayerRef.value?.audioElementRef as MaybeExposedElement,
         )
       );

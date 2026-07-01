@@ -67,7 +67,8 @@ function isHttpLikeUrl(url: string): boolean {
     const parsed = new URL(url, "https://example.com");
 
     return parsed.protocol === "http:" || parsed.protocol === "https:";
-  } catch {
+  }
+  catch {
     return false;
   }
 }
@@ -79,8 +80,8 @@ function resolveDownloadUrl(item: MediaViewerItem): string | undefined {
     return item.downloadUrl;
 
   if (
-    (item.kind === "image" || item.kind === "video" || item.kind === "audio") &&
-    isHttpLikeUrl(item.src)
+    (item.kind === "image" || item.kind === "video" || item.kind === "audio")
+    && isHttpLikeUrl(item.src)
   ) {
     return item.src;
   }
@@ -229,10 +230,10 @@ function mergeMediaDimensions(
   const width = explicit?.width ?? measured.width ?? declared.width;
   const height = explicit?.height ?? measured.height ?? declared.height;
   const aspectRatio =
-    normalizeAspectRatio(explicit?.aspectRatio) ??
-    normalizeAspectRatio(measured.aspectRatio) ??
-    getAspectRatioFromSize(width, height) ??
-    normalizeAspectRatio(declared.aspectRatio);
+    normalizeAspectRatio(explicit?.aspectRatio)
+    ?? normalizeAspectRatio(measured.aspectRatio)
+    ?? getAspectRatioFromSize(width, height)
+    ?? normalizeAspectRatio(declared.aspectRatio);
 
   return { width, height, aspectRatio };
 }
@@ -260,9 +261,9 @@ function resolveMediaLayoutHint(
     height: merged.height,
     aspectRatio: merged.aspectRatio ?? fallbackAspectRatio,
     preferredCaptionPlacement:
-      overrides.preferredCaptionPlacement ??
-      item?.viewerLayout?.preferredCaptionPlacement ??
-      "auto",
+      overrides.preferredCaptionPlacement
+      ?? item?.viewerLayout?.preferredCaptionPlacement
+      ?? "auto",
     gap: overrides.gap ?? item?.viewerLayout?.gap ?? 24,
   };
 }
@@ -285,10 +286,10 @@ function estimateFittedMediaWidth(params: {
   if (mediaWidth && mediaWidth > 0) return Math.min(containerWidth, mediaWidth);
 
   if (
-    mediaHeight &&
-    mediaHeight > 0 &&
-    mediaAspectRatio &&
-    mediaAspectRatio > 0
+    mediaHeight
+    && mediaHeight > 0
+    && mediaAspectRatio
+    && mediaAspectRatio > 0
   ) {
     return Math.min(containerWidth, mediaHeight * mediaAspectRatio);
   }
@@ -335,15 +336,15 @@ function chooseCaptionPlacement(
   if (containerWidth <= 0 || containerHeight <= 0) return "below";
 
   const effectiveAspectRatio =
-    normalizeAspectRatio(mediaAspectRatio) ??
-    getAspectRatioFromSize(mediaWidth, mediaHeight) ??
-    getDefaultMediaAspectRatio(mediaKind);
+    normalizeAspectRatio(mediaAspectRatio)
+    ?? getAspectRatioFromSize(mediaWidth, mediaHeight)
+    ?? getDefaultMediaAspectRatio(mediaKind);
 
   // Wide/video-like media should keep its horizontal space. A side caption makes it visually too small,
   // especially before intrinsic video dimensions are available.
   if (
-    preferredPlacement !== "side" &&
-    isWideMedia(mediaKind, effectiveAspectRatio, wideAspectRatioThreshold)
+    preferredPlacement !== "side"
+    && isWideMedia(mediaKind, effectiveAspectRatio, wideAspectRatioThreshold)
   ) {
     return "below";
   }
@@ -351,8 +352,8 @@ function chooseCaptionPlacement(
   if (preferredPlacement === "side") return "side";
 
   const kindMainWidthFloor =
-    minMainWidth ??
-    (
+    minMainWidth
+    ?? (
       {
         image: 360,
         video: 560,
@@ -382,20 +383,20 @@ function chooseCaptionPlacement(
   );
 
   if (
-    mediaKind === "audio" &&
-    containerWidth >= kindMainWidthFloor + sideWidth + gap
+    mediaKind === "audio"
+    && containerWidth >= kindMainWidthFloor + sideWidth + gap
   )
     return "side";
   if (
-    mediaKind === "pdf" &&
-    containerWidth >= fittedMediaWidth + sideWidth + gap
+    mediaKind === "pdf"
+    && containerWidth >= fittedMediaWidth + sideWidth + gap
   )
     return "side";
   if (mediaIsNarrow && unusedSideSpace >= sideWidth) return "side";
   if (
-    mediaKind === "custom" &&
-    effectiveAspectRatio === null &&
-    containerWidth >= 1180
+    mediaKind === "custom"
+    && effectiveAspectRatio === null
+    && containerWidth >= 1180
   )
     return "side";
 

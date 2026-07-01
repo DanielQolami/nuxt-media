@@ -24,10 +24,10 @@ function readIntrinsicDimensions(
   if (!element) return { aspectRatio: null };
 
   if (
-    typeof HTMLImageElement !== "undefined" &&
-    element instanceof HTMLImageElement &&
-    element.naturalWidth > 0 &&
-    element.naturalHeight > 0
+    typeof HTMLImageElement !== "undefined"
+    && element instanceof HTMLImageElement
+    && element.naturalWidth > 0
+    && element.naturalHeight > 0
   ) {
     return {
       width: element.naturalWidth,
@@ -37,10 +37,10 @@ function readIntrinsicDimensions(
   }
 
   if (
-    typeof HTMLVideoElement !== "undefined" &&
-    element instanceof HTMLVideoElement &&
-    element.videoWidth > 0 &&
-    element.videoHeight > 0
+    typeof HTMLVideoElement !== "undefined"
+    && element instanceof HTMLVideoElement
+    && element.videoWidth > 0
+    && element.videoHeight > 0
   ) {
     return {
       width: element.videoWidth,
@@ -78,8 +78,8 @@ export function useMediaElementMeasurements(
     const image = event.currentTarget;
 
     if (
-      typeof HTMLImageElement !== "undefined" &&
-      image instanceof HTMLImageElement
+      typeof HTMLImageElement !== "undefined"
+      && image instanceof HTMLImageElement
     ) {
       setIntrinsicSize(image.naturalWidth, image.naturalHeight);
     }
@@ -89,8 +89,8 @@ export function useMediaElementMeasurements(
     const video = event?.currentTarget ?? toValue(elementRef);
 
     if (
-      typeof HTMLVideoElement !== "undefined" &&
-      video instanceof HTMLVideoElement
+      typeof HTMLVideoElement !== "undefined"
+      && video instanceof HTMLVideoElement
     ) {
       setIntrinsicSize(video.videoWidth, video.videoHeight);
     }
@@ -110,13 +110,13 @@ export function useMediaElementMeasurements(
 
     return {
       width:
-        intrinsicWidth.value ??
-        fallback.width ??
-        (renderedWidth.value || undefined),
+        intrinsicWidth.value
+        ?? fallback.width
+        ?? (renderedWidth.value || undefined),
       height:
-        intrinsicHeight.value ??
-        fallback.height ??
-        (renderedHeight.value || undefined),
+        intrinsicHeight.value
+        ?? fallback.height
+        ?? (renderedHeight.value || undefined),
       aspectRatio:
         measuredAspectRatio ?? fallbackAspectRatio ?? renderedAspectRatio,
     };

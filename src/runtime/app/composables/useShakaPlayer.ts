@@ -56,8 +56,8 @@ function normalizePlayerError(error: unknown) {
     const detail = (error as ShakaErrorEvent).detail;
 
     return new Error(
-      detail?.message ||
-        `Shaka Player error${detail?.code ? ` (${detail.code})` : ""}.`,
+      detail?.message
+      || `Shaka Player error${detail?.code ? ` (${detail.code})` : ""}.`,
     );
   }
 
@@ -232,9 +232,9 @@ export function useShakaPlayer(
     const mediaElement = toValue(mediaElementRef);
 
     if (
-      !mediaElement ||
-      !mediaSession.isSupported.value ||
-      !runtimeMediaSessionEnabled
+      !mediaElement
+      || !mediaSession.isSupported.value
+      || !runtimeMediaSessionEnabled
     ) {
       return;
     }
@@ -251,9 +251,9 @@ export function useShakaPlayer(
     const mediaElement = toValue(mediaElementRef);
 
     if (
-      !mediaElement ||
-      !mediaSession.isSupported.value ||
-      !runtimeMediaSessionEnabled
+      !mediaElement
+      || !mediaSession.isSupported.value
+      || !runtimeMediaSessionEnabled
     ) {
       return;
     }
@@ -276,8 +276,8 @@ export function useShakaPlayer(
     activeMetadata.value = metadata ?? null;
 
     if (
-      !runtimeMediaSessionEnabled ||
-      options.mediaSession?.enabled === false
+      !runtimeMediaSessionEnabled
+      || options.mediaSession?.enabled === false
     ) {
       return;
     }
@@ -414,8 +414,8 @@ export function useShakaPlayer(
 
   function applyMediaSessionActionHandlers(mediaElement: HTMLMediaElement) {
     if (
-      !runtimeMediaSessionEnabled ||
-      options.mediaSession?.enabled === false
+      !runtimeMediaSessionEnabled
+      || options.mediaSession?.enabled === false
     ) {
       return;
     }
@@ -481,7 +481,8 @@ export function useShakaPlayer(
       await nextPlayer.attach(mediaElement);
       bindPlayerEvents(nextPlayer);
       player.value = nextPlayer;
-    } else if (player.value.getMediaElement() !== mediaElement) {
+    }
+    else if (player.value.getMediaElement() !== mediaElement) {
       await player.value.attach(mediaElement);
     }
 
@@ -579,10 +580,10 @@ export function useShakaPlayer(
 
       activeSource.value = normalizedSource;
       updateMediaSessionMetadata(
-        normalizedSource.metadata ??
-          loadOptions.metadata ??
-          options.mediaSession?.metadata ??
-          null,
+        normalizedSource.metadata
+        ?? loadOptions.metadata
+        ?? options.mediaSession?.metadata
+        ?? null,
       );
       refreshVariantTracks();
       syncPlaybackState();
@@ -593,10 +594,12 @@ export function useShakaPlayer(
       }
 
       return playerInstance;
-    } catch (loadError) {
+    }
+    catch (loadError) {
       error.value = normalizePlayerError(loadError);
       throw error.value;
-    } finally {
+    }
+    finally {
       isLoading.value = false;
     }
   }
@@ -630,16 +633,17 @@ export function useShakaPlayer(
     () => toValue(mediaElementRef),
     async (nextMediaElement) => {
       if (
-        !import.meta.client ||
-        options.autoAttach === false ||
-        !nextMediaElement
+        !import.meta.client
+        || options.autoAttach === false
+        || !nextMediaElement
       ) {
         return;
       }
 
       try {
         await attach();
-      } catch (attachError) {
+      }
+      catch (attachError) {
         error.value = normalizePlayerError(attachError);
       }
     },

@@ -5,6 +5,7 @@ import type {
   MediaViewerItem,
   MediaViewerMediaLayoutHint,
 } from "../types/media-viewer.types";
+import type { MediaViewerSlideMetricPayload } from "./MediaViewerSlide.vue";
 
 interface MediaViewerGalleryProps<TItem extends MediaViewerItem> {
   galleryKey: string;
@@ -44,8 +45,8 @@ interface MediaViewerGallerySlots extends Slots {
     index: number;
     open: () => void;
   }): never;
-  thumbnail(props: { item: MediaViewerItem; index: number }): never;
-  figcaption(props: { item: MediaViewerItem; index: number }): never;
+  "thumbnail"(props: { item: MediaViewerItem; index: number }): never;
+  "figcaption"(props: { item: MediaViewerItem; index: number }): never;
   "slide-media"(props: {
     item: MediaViewerItem;
     index: number;
@@ -393,7 +394,7 @@ const {
                         @navigate:previous="previousSlide"
                         @download="onDownload"
                         @metric="
-                          (payload) =>
+                          (payload: MediaViewerSlideMetricPayload) =>
                             emit('metric', { ...payload, galleryKey })
                         "
                       />
