@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.1.3
+
+[compare changes](https://github.com/DanielQolami/nuxt-media/compare/v0.1.1...v0.1.3)
+
+### 💅 Refactors
+
+- Removed the use of pinia from gallery viewer ([6de4c24](https://github.com/DanielQolami/nuxt-media/commit/6de4c24))
+- Shaka loader import and install lucide icons ([d2876b4](https://github.com/DanielQolami/nuxt-media/commit/d2876b4))
+
+### 🏡 Chore
+
+- **release:** V0.1.2 ([93df8ac](https://github.com/DanielQolami/nuxt-media/commit/93df8ac))
+
+### ❤️ Contributors
+
+- Daniel Qolami <qolamidaniel@gmail.com>
+
 ## v0.1.2
 
 [compare changes](https://github.com/DanielQolami/nuxt-media/compare/v0.1.1...v0.1.2)
