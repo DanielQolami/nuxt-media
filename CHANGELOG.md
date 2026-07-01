@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.6
+
+[compare changes](https://github.com/DanielQolami/nuxt-media/compare/v0.1.5...v0.1.6)
+
+### 🩹 Fixes
+
+- Set shaka-player as peerDependency ([5bc884b](https://github.com/DanielQolami/nuxt-media/commit/5bc884b))
+
+### ❤️ Contributors
+
+- Daniel Qolami <qolamidaniel@gmail.com>
+
 ## v0.1.5
 
 [compare changes](https://github.com/DanielQolami/nuxt-media/compare/v0.1.4...v0.1.5)
