@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.4
+
+[compare changes](https://github.com/DanielQolami/nuxt-media/compare/v0.1.3...v0.1.4)
+
+### 🩹 Fixes
+
+- Removed polyfill because after build, it is available to nuxt projects ([0425aa8](https://github.com/DanielQolami/nuxt-media/commit/0425aa8))
+
+### ❤️ Contributors
+
+- Daniel Qolami <qolamidaniel@gmail.com>
+
 ## v0.1.3
 
 [compare changes](https://github.com/DanielQolami/nuxt-media/compare/v0.1.1...v0.1.3)
