@@ -14,6 +14,9 @@ importers:
       '@nuxt/kit':
         specifier: ^4.4.8
         version: 4.4.8(magicast@0.5.3)
+      defu:
+        specifier: ^6.1.7
+        version: 6.1.7
       shaka-player:
         specifier: ^5.1.12
         version: 5.1.12
@@ -51,9 +54,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      defu:
-        specifier: ^6.1.7
-        version: 6.1.7
       eslint:
         specifier: ^10.4.1
         version: 10.6.0(jiti@2.7.0)
