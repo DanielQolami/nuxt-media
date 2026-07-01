@@ -35,7 +35,7 @@ type ModuleOptions = {
 /**
  * Media dependencies that benefit from eager optimization in Vite dev mode.
  */
-const MEDIA_OPTIMIZE_DEPS = ["shaka-player"] as const;
+const MEDIA_OPTIMIZE_DEPS = ["shaka-player", "clsx", "tailwind-merge"] as const;
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -104,27 +104,27 @@ export default defineNuxtModule<ModuleOptions>({
       nuxt.options.css.unshift(css);
     }
 
-    const viteOptions = (nuxt.options.vite = defu(nuxt.options.vite || {}, {
+    const viteOptions = (nuxt.options.vite = defu(nuxt.options.vite ?? {}, {
       optimizeDeps: {
         include: [],
       },
     }));
-    const optimizeDeps = viteOptions.optimizeDeps ?? { include: [] };
-    const include = [...(optimizeDeps.include || [])] as string[];
+
+    const optimizeDeps = viteOptions.optimizeDeps ??= { include: [] };
+
+    optimizeDeps.include = [
+      ...new Set([
+        ...(optimizeDeps.include ?? []),
+        ...MEDIA_OPTIMIZE_DEPS,
+      ]),
+    ];
+
     const publicRuntimeConfig = nuxt.options.runtimeConfig.public as Record<
       string,
       unknown
     > & {
       appMedia?: ModuleOptions;
     };
-
-    for (const dependency of MEDIA_OPTIMIZE_DEPS) {
-      if (!include.includes(dependency)) {
-        include.push(dependency);
-      }
-    }
-
-    optimizeDeps.include = include;
 
     publicRuntimeConfig.appMedia = defu(
       {
