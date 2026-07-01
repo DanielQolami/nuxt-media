@@ -5,34 +5,50 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-Shaka-backed audio/video players and a fullscreen media gallery for images, video, audio, maps, PDFs, and future custom renderers. Built for Nuxt 4 + Vue 3 (Nuxt UI v4, Tailwind v4, VueUse, Pinia supported).
+Shaka-backed **audio/video** players and a fullscreen **media gallery** for images, video, audio, maps, PDFs, and future custom renderers. Designed for **Nuxt 4** + **Vue 3** (Nuxt UI v4, Tailwind v4, VueUse, Pinia compatible).
+
+## What this module gives you
+
+### Players (focus)
+- **`MediaVideoPlayer`**: uses native `<video>` + Shaka Player for DASH/HLS streaming.
+- **`MediaAudioPlayer`**: uses native `<audio>` + Shaka Player for DASH/HLS streaming.
+
+Both players support:
+- configurable Shaka options via runtime config
+- a quality selector when multiple qualities/variants are available
+- **ABR (Auto)** for DASH/HLS when applicable
+- **metadata-driven** media session fields (where enabled by config)
+- default file types are acceptable (.mp4, .mp3, ...)
+
+### Gallery (extensible)
+- **`MediaViewerGallery`**: fullscreen modal “shell” that handles route/query syncing, keyboard navigation, preloading, click-outside, and caption rendering.
+- **`MediaViewerSlide`**: chooses the correct renderer for the active item and handles media measurement + image zoom/pan behaviors.
+- Future-ready: map/PDF/custom renderers can be added and contributed via the renderer/slot mechanism.
+
+> Contribution welcome: if you want to add a new slide renderer (e.g., map tiles, PDF viewer, or custom HTML), build it as a gallery slide renderer and wire it into the renderer registry/slots.
+
+---
 
 ## Features
 
-- **Media players**
-  - `MediaVideoPlayer` (DASH/HLS via Shaka, with quality selection)
-  - `MediaAudioPlayer` (DASH/HLS via Shaka, with quality selection)
+- **Shaka-backed** HTML5 **video & audio** playback
+- **Quality selection** (explicit qualities and/or Shaka variant tracks)
+- **ABR Auto** (DASH/HLS) + manual variant selection (locks the track)
 - **Fullscreen viewer gallery**
-  - Modal shell with route/query syncing, keyboard navigation, preload, click-outside, toolbar actions
-  - Caption rendering with responsive placement rules
-- **Slide renderer**
-  - `MediaViewerSlide` uses a renderer registry
-  - Image zoom/pan/pinch, and media measurement/sizing
-  - Custom slide media renderer via `slide-media` slot
+  - modal + navigation + preloading + click-outside
+  - caption placement rules
+  - image zoom/pan/pinch + measurement
+- **Extensible slide rendering**
+  - custom slide renderers via `slide-media` slot
 
-## Install
-
-```bash
-pnpm add nuxt-media
-```
-
-(Alternative: `npx nuxt module add nuxt-media`.)
+---
 
 ## Quick setup
 
+Install:
+
 ```bash
-# Add to Nuxt config (if your module supports it automatically, this may be unnecessary)
-# In most cases the module just registers components and composables.
+pnpm add nuxt-media
 ```
 
 ### Runtime config (`nuxt.config.ts`)
@@ -43,12 +59,14 @@ export default defineNuxtConfig({
     public: {
       appMedia: {
         enabled: true,
+
         shaka: {
           preload: "metadata",
           preferredAudio: "en",
           preferredText: "en",
           playerConfig: {},
         },
+
         mediaSession: {
           enabled: true,
           defaultArtwork: [
@@ -65,9 +83,11 @@ export default defineNuxtConfig({
 });
 ```
 
-## Media item schema
+---
 
-The gallery accepts a list of items shaped like this:
+## Video & Audio item schema (for the gallery)
+
+Gallery items include a `kind` and shared metadata used by player/slide renderers.
 
 ```ts
 type MediaViewerItem =
@@ -76,12 +96,8 @@ type MediaViewerItem =
   | MediaViewerAudioItem
   | MediaViewerMapItem
   | MediaViewerPdfItem;
-```
 
-Common fields:
-
-```ts
-{
+type CommonFields = {
   id: string;
   kind: "image" | "video" | "audio" | "map" | "pdf";
   title?: string;
@@ -93,103 +109,73 @@ Common fields:
   hideDownload?: boolean;
   lqip?: string;
   viewerLayout?: MediaViewerMediaLayoutHint;
-}
-```
-
-Notes:
-- **Images** may omit `width` and `height`. The viewer measures the rendered image using `naturalWidth` / `naturalHeight` and uses backend dimensions only as fallbacks.
-- **Captions are opt-in**: if you don’t provide `slideCaption` and you don’t use the `slide-caption` slot, the viewer won’t render the `<aside>` and the media fills the available space.
-
-### Image item example
-
-```ts
-const imageItem = {
-  id: "img-1",
-  kind: "image",
-  src: "/media/photo.jpg",
-  thumbnailSrc: "/media/photo-thumb.jpg",
-  alt: "A mountain landscape",
-  title: "Mountain",
-  slideCaption: "Shot at sunrise.",
 };
 ```
 
-### Video item (adaptive manifest / ABR)
+Images may omit `width`/`height`. The viewer measures loaded images using `naturalWidth`/`naturalHeight` and uses backend dimensions as fallbacks.
 
-```ts
-const videoItem = {
-  id: "video-1",
-  kind: "video",
-  src: "/media/film.mpd",
-  mimeType: "application/dash+xml",
-  poster: "/media/film-poster.jpg",
-  title: "Film",
-  slideCaption: "A short documentary clip.",
-  metadata: {
-    title: "Film",
-    artist: "Science Lab",
-  },
-};
+---
+
+## MediaVideoPlayer (Shaka + native `<video>`)
+
+### Adaptive manifest (DASH/HLS)
+```vue
+<MediaVideoPlayer
+  src="/media/film.mpd"
+  mime-type="application/dash+xml"
+  poster="/media/film-poster.jpg"
+  title="Film"
+  :metadata="{
+    title: 'Film',
+    artist: 'Science Lab',
+  }"
+/>
 ```
 
-### Video item (explicit quality sources)
-
-```ts
-const videoItem = {
-  id: "video-qualities",
-  kind: "video",
-  src: "/media/video-720.mp4",
-  poster: "/media/video-poster.jpg",
-  sources: [
-    {
-      src: "/media/video-1080.mp4",
-      label: "1080p",
-      height: 1080,
-      mimeType: "video/mp4",
-      isDefault: true,
-    },
-    {
-      src: "/media/video-720.mp4",
-      label: "720p",
-      height: 720,
-      mimeType: "video/mp4",
-    },
-  ],
-};
+### Explicit quality sources (manual quality selection)
+```vue
+<MediaVideoPlayer
+  :sources="[
+    { src: '/media/video-1080.mp4', label: '1080p', height: 1080, mimeType: 'video/mp4', isDefault: true },
+    { src: '/media/video-720.mp4', label: '720p', height: 720, mimeType: 'video/mp4' },
+  ]"
+  poster="/media/video-poster.jpg"
+/>
 ```
 
-### Audio item (explicit quality sources)
+### Quality behavior (important)
+- A quality selector appears when there are **multiple explicit sources** and/or **multiple Shaka variant tracks**.
+- For DASH/HLS:
+  - **Auto** enables **ABR**.
+  - Selecting a specific variant **disables ABR** and locks the chosen track.
 
-```ts
-const audioItem = {
-  id: "audio-1",
-  kind: "audio",
-  src: "/media/story-128.mp3",
-  poster: "/media/story-cover.jpg",
-  title: "Audio Story",
-  slideCaption: "An audio-only story with artwork shown by the slide renderer.",
-  sources: [
-    {
-      src: "/media/story-320.mp3",
-      label: "High quality",
-      bitrate: 320000,
-      mimeType: "audio/mpeg",
-    },
-    {
-      src: "/media/story-128.mp3",
-      label: "Standard",
-      bitrate: 128000,
-      mimeType: "audio/mpeg",
-      isDefault: true,
-    },
-  ],
-};
+---
+
+## MediaAudioPlayer (Shaka + native `<audio>`)
+
+### Adaptive manifest (DASH/HLS)
+```vue
+<MediaAudioPlayer
+  src="/media/audio.mpd"
+  mime-type="application/dash+xml"
+  title="Audio title"
+  :metadata="{
+    title: 'Audio title',
+    artist: 'Creator name',
+  }"
+/>
 ```
 
-## MediaViewerGallery
+### Quality behavior
+- When multiple variants are available, the player exposes a quality selector.
+- The audio component renders only the `<audio>` element (+ optional quality selector).
+  - **Artwork/posters should be rendered by the gallery slide**, not by the audio player component.
+
+---
+
+## MediaViewerGallery (fullscreen modal)
 
 ### Basic usage
-
 ```vue
 <script setup lang="ts">
 const items = [imageItem, videoItem, audioItem];
@@ -200,8 +186,10 @@ const items = [imageItem, videoItem, audioItem];
 </template>
 ```
 
-### Custom thumbnail slot
+### Captions are opt-in
+- If you don’t provide `slideCaption` and you don’t use the `slide-caption` slot, the viewer won’t render the `<aside>` and the media fills the available space.
 
+### Custom thumbnail
 ```vue
 <MediaViewerGallery gallery-key="project-media" :items="items">
   <template v-slot:thumbnail="{ item }">
@@ -223,8 +211,7 @@ const items = [imageItem, videoItem, audioItem];
 </MediaViewerGallery>
 ```
 
-### Custom slide caption slot
-
+### Custom slide caption
 ```vue
 <MediaViewerGallery gallery-key="project-media" :items="items">
   <template v-slot:slide-caption="{ item, placement }">
@@ -237,40 +224,22 @@ const items = [imageItem, videoItem, audioItem];
 </MediaViewerGallery>
 ```
 
-### Caption placement behavior (high level)
-
-- Mobile: captions are **below**.
-- Wide / video-like media: captions are **below** (to avoid squeezing).
-- Narrow/portrait media: captions may be placed **beside** when there’s enough room.
-- Audio: captions may be placed **beside** the audio card on large screens.
+### Caption placement rules (high level)
+- Mobile: captions are below.
+- Wide/video-like media: captions are below.
+- Narrow/portrait media: captions may be beside when there’s enough room.
+- Audio: captions may be beside the audio card on large screens.
 - Custom renderers can influence placement via `viewerLayout`.
 
-#### Layout override example
+---
 
-```ts
-const item = {
-  id: "pdf-1",
-  kind: "pdf",
-  src: "/docs/report.pdf",
-  title: "Report",
-  slideCaption: "Quarterly report.",
-  viewerLayout: {
-    kind: "pdf",
-    preferredCaptionPlacement: "side",
-    minMainWidth: 520,
-    minSideWidth: 320,
-    maxSideWidth: 480,
-    gap: 24,
-  },
-};
-```
+## Extending slide rendering (maps, PDFs, custom HTML)
 
-Use `preferredCaptionPlacement: "side"` only when it truly fits the design.
+In the future, the gallery aims to support additional kinds (e.g., **map** and **PDF**) and custom HTML renderers.
 
-## Custom slide media renderer (`slide-media`)
+We encourage contributions by adding new slide renderers using the slot-based renderer hook below.
 
-Use the `slide-media` slot for custom map/panorama/PDF/advanced renderers.
-
+### `slide-media` slot for custom renderers
 ```vue
 <MediaViewerGallery gallery-key="places" :items="items">
   <template
@@ -287,186 +256,82 @@ Use the `slide-media` slot for custom map/panorama/PDF/advanced renderers.
 ```
 
 Important:
-- Always bind `setMediaElement` to the real interactive media element. The gallery uses it for click-outside detection and measurement.
+- Always bind `setMediaElement` to the **real interactive media element**.
+  - The gallery uses it for click-outside detection and measurement.
+- Use `setZoom` when your renderer supports zoom behavior (e.g., custom image-like media).
 
-## MediaVideoPlayer
-
-```vue
-<MediaVideoPlayer
-  src="/media/video.mpd"
-  mime-type="application/dash+xml"
-  poster="/media/poster.jpg"
-  title="Video title"
-  :metadata="{
-    title: 'Video title',
-    artist: 'Creator name',
-  }"
-/>
-```
-
-With explicit quality sources:
-
-```vue
-<MediaVideoPlayer
-  :sources="[
-    { src: '/media/video-1080.mp4', label: '1080p', height: 1080, mimeType: 'video/mp4' },
-    {
-      src: '/media/video-720.mp4',
-      label: '720p',
-      height: 720,
-      mimeType: 'video/mp4',
-      isDefault: true,
-    },
-  ]"
-  poster="/media/poster.jpg"
-/>
-```
-
-Quality behavior:
-- Exposes a quality selector when there’s more than one explicit source or more than one Shaka variant track.
-- For DASH/HLS, **Auto** enables ABR.
-- Selecting a specific variant disables ABR and locks the chosen track.
-
-## MediaAudioPlayer
-
-```vue
-<MediaAudioPlayer
-  src="/media/audio.mpd"
-  mime-type="application/dash+xml"
-  title="Audio title"
-  :metadata="{
-    title: 'Audio title',
-    artist: 'Creator name',
-  }"
-/>
-```
-
-Notes:
-- The audio component renders only the `<audio>` element and the optional quality selector.
-- Artwork/posters are rendered by the gallery slide (not by the audio player component).
+---
 
 ## Composables
 
 ### `useShakaPlayer(mediaElementRef, options)`
-
 Low-level Shaka wrapper used by both audio and video players.
 
 Returns:
-- `player`
-- `shaka`
-- `error`
-- `activeSource`
-- `isLoading`
-- `isReady`
-- `variantTracks`
-- `activeVariantTrack`
+- `player`, `shaka`, `error`
+- `activeSource`, `isLoading`, `isReady`
+- `variantTracks`, `activeVariantTrack`
 - `isAbrEnabled`
-- `attach()`
-- `load()`
-- `play()`
-- `pause()`
-- `stop()`
-- `setAbrEnabled()`
-- `selectVariantTrack()`
-- `destroy()`
+- methods: `attach()`, `load()`, `play()`, `pause()`, `stop()`, `setAbrEnabled()`, `selectVariantTrack()`, `destroy()`
 
 ### `useVideoPlayer()` and `useAudioPlayer()`
-
-Thin wrappers around `useShakaPlayer()` that set `kind: "video"` or `kind: "audio"`.
+Thin wrappers around `useShakaPlayer()` that set `kind: "video"` / `kind: "audio"`.
 
 ### `useMediaPlayerQuality()`
-
 Shared quality-source logic for `MediaVideoPlayer` and `MediaAudioPlayer`:
 - normalizes explicit sources
 - builds quality options
 - preserves current time while switching explicit sources
 - emits `quality-change` events
 
-### `useMediaViewerGallery()`
+### `useMediaViewerGallery()` and `useMediaViewerSlide()`
+Own gallery and slide state:
+- modal lifecycle, route/query syncing, active item safety
+- caption visibility/placement, preloading, keyboard navigation, click-outside, metrics
+- renderer selection, slide media refs, media session metadata, image measurement
 
-Owns gallery state:
-- modal state, route query syncing, active item safety
-- caption visibility and placement
-- preloading
-- keyboard controls
-- click-outside behavior
-- metrics
+### `useImageZoomPan()` and `useMediaElementMeasurements()`
+- zoom/pan/pinch/double-tap + pan clamping
+- rendered size + intrinsic dimensions via `naturalWidth`/`naturalHeight` (images) and `videoWidth`/`videoHeight` (videos)
 
-### `useMediaViewerSlide()`
-
-Owns slide behavior:
-- renderer selection
-- slide media refs
-- media session metadata
-- image measurement and image box sizing
-
-### `useImageZoomPan()`
-
-Wheel zoom, pointer-centered zoom, drag panning, touch panning, pinch zoom, double tap, and pan clamping.
-
-### `useMediaElementMeasurements()`
-
-Reads rendered size via `useElementSize()` and intrinsic dimensions:
-- images: `naturalWidth` / `naturalHeight`
-- videos: `videoWidth` / `videoHeight`
+---
 
 ## Migration notes
 
 ### Rename `viewerCaption` → `slideCaption`
-
 Before:
 ```ts
-{
-  viewerCaption: "Shown in the fullscreen viewer.";
-}
+{ viewerCaption: "Shown in the fullscreen viewer." }
 ```
 
 After:
 ```ts
-{
-  slideCaption: "Shown in the fullscreen viewer.";
-}
+{ slideCaption: "Shown in the fullscreen viewer." }
 ```
 
-### Captions are now opt-in
-
-No `slideCaption` and no `slide-caption` slot means the viewer renders without an `<aside>`, letting the media fill available space.
-
 ### Wide media now prefers below captions
+In automatic mode, wide video-like aspect ratios use below-caption layout to avoid placing a 16:9 player beside a side panel.
 
-In automatic mode, wide video-like aspect ratios use below-caption layout on desktop to avoid placing a 16:9 media beside a side panel.
+---
 
 ## Development
 
 ```bash
-# Install dependencies
 pnpm install
-
-# Generate type stubs
 pnpm dev:prepare
-
-# Develop with the playground
 pnpm dev
-
-# Build the playground
 pnpm dev:build
-
-# Lint
 pnpm lint
-
-# Tests
 pnpm test
 pnpm test:watch
-
-# Release
 pnpm release
 ```
+
+---
 
 ## GitHub
 
 https://github.com/DanielQolami/nuxt-media
-
----
 
 [npm-version-src]: https://img.shields.io/npm/v/nuxt-media/latest.svg?style=flat&colorA=020420&colorB=00DC82
 [npm-version-href]: https://npmjs.com/package/nuxt-media
