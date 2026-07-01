@@ -29,19 +29,11 @@ import type MediaAudioPlayer from "./MediaAudioPlayer.vue";
 // eslint-disable-next-line import/first
 import type MediaVideoPlayer from "./MediaVideoPlayer.vue";
 // eslint-disable-next-line import/first
-import type { MediaViewerItem } from "../types/media-viewer.types";
-// eslint-disable-next-line import/first
 import { useMediaViewerSlide } from "../composables/media-viewer/useMediaViewerSlide";
 // eslint-disable-next-line import/first
 import { computed, useTemplateRef } from "vue";
-
-interface MediaViewerSlideProps {
-  item: MediaViewerItem;
-  active: boolean;
-  preload?: boolean;
-  zoom: number;
-  maxZoom?: number;
-}
+// eslint-disable-next-line import/first
+import type { MediaViewerSlideProps } from "../lib/viewer/media-viewer.types";
 
 const props = withDefaults(defineProps<MediaViewerSlideProps>(), {
   preload: false,

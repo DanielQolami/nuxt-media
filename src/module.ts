@@ -161,8 +161,8 @@ export default defineNuxtModule<ModuleOptions>({
       ),
     });
 
-    // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
     // export composables
+    // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
     addImports([
       {
         name: "useAudioPlayer",
