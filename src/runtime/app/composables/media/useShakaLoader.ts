@@ -12,7 +12,7 @@ const useShakaLoader = createSharedComposable(
       }
 
       if (shaka === null) {
-        const shakaModule = await import("shaka-player/dist/shaka-player.compiled");
+        const shakaModule = await import("shaka-player");
         shakaModule.default.polyfill.installAll();
         shaka = shakaModule.default as ShakaPlayerNamespace;
       }

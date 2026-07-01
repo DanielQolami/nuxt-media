@@ -48,7 +48,7 @@ Both players support:
 Install:
 
 ```bash
-pnpm add nuxt-media
+pnpm add nuxt-media shaka-player
 ```
 
 add it manually in `nuxt.config.ts`:

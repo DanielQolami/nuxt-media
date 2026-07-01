@@ -36,11 +36,13 @@
     "test:watch": "vitest watch",
     "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
   },
+  "peerDependencies": {
+    "shaka-player": "^5.1.12"
+  },
   "dependencies": {
     "@nuxt/image": "^2.0.0",
     "@nuxt/kit": "^4.4.8",
-    "defu": "^6.1.7",
-    "shaka-player": "^5.1.12"
+    "defu": "^6.1.7"
   },
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.115",
