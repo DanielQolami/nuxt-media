@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.2
+
+[compare changes](https://github.com/DanielQolami/nuxt-media/compare/v0.1.1...v0.1.2)
+
+### 💅 Refactors
+
+- Removed the use of pinia from gallery viewer ([6de4c24](https://github.com/DanielQolami/nuxt-media/commit/6de4c24))
+
+### ❤️ Contributors
+
+- Daniel Qolami <qolamidaniel@gmail.com>
+
 ## v0.1.1
 
 
