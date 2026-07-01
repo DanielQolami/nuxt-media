@@ -57,6 +57,7 @@
     "eslint": "^10.4.1",
     "nuxt": "^4.4.8",
     "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.3.2",
     "typescript": "~6.0.3",
     "vitest": "^4.1.8",
     "vue-tsc": "^3.3.3"

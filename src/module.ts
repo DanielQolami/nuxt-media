@@ -49,6 +49,9 @@ export default defineNuxtModule<ModuleOptions>({
     "@nuxt/image": {
       version: ">=2.0.0",
     },
+    "@nuxt/ui": {
+      version: ">=4.9.0",
+    },
     "@pinia/nuxt": {
       version: ">=0.11.0",
     },
@@ -94,6 +97,12 @@ export default defineNuxtModule<ModuleOptions>({
    */
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url);
+
+    // We can inject our CSS file which includes Tailwind's directives
+    const css = resolver.resolve("./runtime/app/assets/main.css");
+    if (!nuxt.options.css.includes(css)) {
+      nuxt.options.css.unshift(css);
+    }
 
     const viteOptions = (nuxt.options.vite = defu(nuxt.options.vite || {}, {
       optimizeDeps: {
