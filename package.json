@@ -39,6 +39,7 @@
   "dependencies": {
     "@nuxt/image": "^2.0.0",
     "@nuxt/kit": "^4.4.8",
+    "@pinia/nuxt": "^0.11.3",
     "defu": "^6.1.7",
     "shaka-player": "^5.1.12"
   },
@@ -49,7 +50,6 @@
     "@nuxt/schema": "^4.4.8",
     "@nuxt/test-utils": "^4.0.3",
     "@nuxt/ui": "^4.9.0",
-    "@pinia/nuxt": "^0.11.3",
     "@types/node": "latest",
     "@vueuse/nuxt": "^14.3.0",
     "changelogen": "^0.6.2",
