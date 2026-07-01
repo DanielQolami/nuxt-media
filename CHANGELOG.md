@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.5
+
+[compare changes](https://github.com/DanielQolami/nuxt-media/compare/v0.1.4...v0.1.5)
+
+### 🩹 Fixes
+
+- Import shaka from its "dist" folder ([f32bc37](https://github.com/DanielQolami/nuxt-media/commit/f32bc37))
+
+### ❤️ Contributors
+
+- Daniel Qolami <qolamidaniel@gmail.com>
+
 ## v0.1.4
 
 [compare changes](https://github.com/DanielQolami/nuxt-media/compare/v0.1.3...v0.1.4)
