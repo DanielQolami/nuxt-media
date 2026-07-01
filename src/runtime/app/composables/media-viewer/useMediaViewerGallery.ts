@@ -9,7 +9,7 @@ import {
   useMutationObserver,
   useRoute,
 } from "#imports";
-import { useMediaViewerCacheStore } from "../../stores/media-viewer-cache.store";
+import { useMediaViewerCache } from "./useMediaViewerCache";
 import type MediaViewerSlide from "../../components/MediaViewerSlide.vue";
 import type {
   MediaViewerCaptionPlacement,
@@ -80,7 +80,7 @@ export function useMediaViewerGallery<
 >(options: UseMediaViewerGalleryOptions<TItem>) {
   const { props, emit, slots, refs } = options;
   const route = useRoute();
-  const cache = useMediaViewerCacheStore();
+  const cache = useMediaViewerCache();
 
   const modalOpen = shallowRef(false);
   const activeIndex = shallowRef(0);

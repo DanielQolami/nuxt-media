@@ -51,6 +51,14 @@ Install:
 pnpm add nuxt-media
 ```
 
+add it manually in `nuxt.config.ts`:
+
+```ts
+export default defineNuxtConfig({
+  modules: ["nuxt-media"],
+});
+```
+
 ### Runtime config (`nuxt.config.ts`)
 
 ```ts

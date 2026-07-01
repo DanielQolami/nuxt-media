@@ -39,7 +39,6 @@
   "dependencies": {
     "@nuxt/image": "^2.0.0",
     "@nuxt/kit": "^4.4.8",
-    "@pinia/nuxt": "^0.11.3",
     "defu": "^6.1.7",
     "shaka-player": "^5.1.12"
   },

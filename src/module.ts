@@ -52,9 +52,6 @@ export default defineNuxtModule<ModuleOptions>({
     "@nuxt/ui": {
       version: ">=4.9.0",
     },
-    "@pinia/nuxt": {
-      version: ">=0.11.0",
-    },
     "@vueuse/nuxt": {
       version: ">=14.3.0",
     },
