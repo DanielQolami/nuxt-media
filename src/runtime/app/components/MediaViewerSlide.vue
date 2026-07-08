@@ -128,7 +128,7 @@ defineExpose({
         :alt="imageItem.alt || imageItem.title || ''"
         :width="imageMeasurements.measuredDimensions.value.width"
         :height="imageMeasurements.measuredDimensions.value.height"
-        sizes="100vw"
+        :sizes="imageItem.sizes || '100vw'"
         fit="contain"
         class="pointer-events-auto block touch-none select-none object-contain transition-opacity duration-300"
         :class="loaded ? 'opacity-100' : 'opacity-0'"

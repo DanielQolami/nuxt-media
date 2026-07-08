@@ -48,6 +48,7 @@ interface MediaViewerImageItem extends MediaViewerBaseItem {
   width?: number;
   height?: number;
   srcSet?: string;
+  sizes?: string;
 }
 
 interface MediaViewerVideoTextTrack {

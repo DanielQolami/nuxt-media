@@ -177,7 +177,7 @@ const {
                       :alt="item.alt || item.title || ''"
                       :width="item.width"
                       :height="item.height"
-                      sizes="100vw sm:50vw lg:33vw"
+                      :sizes="item.sizes || '100vw sm:50vw lg:33vw'"
                       class="size-full object-cover"
                       loading="lazy"
                       decoding="async"
