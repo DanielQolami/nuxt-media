@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.7
+
+[compare changes](https://github.com/DanielQolami/nuxt-media/compare/v0.1.6...v0.1.7)
+
+### 🚀 Enhancements
+
+- Add "sizes" to the image interface ([183af38](https://github.com/DanielQolami/nuxt-media/commit/183af38))
+
+### ❤️ Contributors
+
+- Daniel Qolami <qolamidaniel@gmail.com>
+
 ## v0.1.6
 
 [compare changes](https://github.com/DanielQolami/nuxt-media/compare/v0.1.5...v0.1.6)
